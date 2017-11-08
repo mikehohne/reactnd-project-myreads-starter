@@ -5,6 +5,9 @@ import * as BooksAPI from './BooksAPI'
 import CurrentlyReading from './currentlyReading'
 import WantToRead from './wantToRead'
 import Read from './read'
+import PropType from 'prop-types'
+import escapeRegExp from 'escape-string-regexp'
+import sortby from 'sortby'
 
 
 class BooksApp extends React.Component {
@@ -14,11 +17,11 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    
 
   state = {
     books: [],
     query: '',
+    maxResults: 10,
     results: [],
     showSearchPage: false
   }
@@ -29,9 +32,29 @@ class BooksApp extends React.Component {
     })
   }
 
+  handleChange = (event) => {
+    this.setState({
+      query: event.target.value
+    })
+  }
+
+  
+
+  searchForTerms = (query,maxResults) => {
+    BooksAPI.search(query,maxResults)
+      .then((results) => {
+        if(results.error) {
+          console.error('Invalid Search Term');
+        }
+        this.setState({
+          results: results,
+      })
+    })
+  }
+
   render() {
 
-    const { books } = this.state
+    const { books, results, query, maxResults } = this.state
 
     let currentlyReadings = []
     let reads = []
@@ -42,10 +65,11 @@ class BooksApp extends React.Component {
         reads.push(book);
       } else if(book.shelf === 'wantToRead'){
         wantToReads.push(book);
-      } else {
+      } else if(book.shelf === 'currentlyReading') {
         currentlyReadings.push(book);
-      }
+      } else {
       return `<div>No Shelves</div>`
+      }
     }))
 
 
@@ -64,8 +88,7 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
-
+                <input type="text" placeholder="Search by title or author" value={query} onChange={this.handleChange}/>
               </div>
             </div>
             <div className="search-books-results">
