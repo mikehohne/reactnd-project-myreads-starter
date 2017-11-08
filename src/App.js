@@ -25,13 +25,30 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books);
       this.setState({ books })
     })
   }
 
   render() {
+
     const { books } = this.state
+
+    let currentlyReadings = []
+    let reads = []
+    let wantToReads = []
+  
+    books.map((book => {
+      if(book.shelf === 'read'){
+        reads.push(book);
+      } else if(book.shelf === 'wantToRead'){
+        wantToReads.push(book);
+      } else {
+        currentlyReadings.push(book);
+      }
+      return `<div>No Shelves</div>`
+    }))
+
+
     return (
       <div className="app">
         {this.state.showSearchPage ? (
@@ -62,9 +79,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <CurrentlyReading books={books} />
-                <WantToRead />
-                <Read />
+                <CurrentlyReading books={currentlyReadings} />
+                <WantToRead books={wantToReads} />
+                <Read books={reads} />
               </div>
             </div>
             <div className="open-search">

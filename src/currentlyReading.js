@@ -15,7 +15,7 @@ class CurrentlyReading extends React.Component {
                   <div className="book">
                     <div className="book-top">
                       {/* image thumbnail */}
-                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: book.imageLinks }}></div>
+                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                       <div className="book-shelf-changer">
                         {/* dropdown */}
                         <select>
