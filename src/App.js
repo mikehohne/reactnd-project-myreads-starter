@@ -45,15 +45,6 @@ class BooksApp extends React.Component {
     })
   }
 
-  // updateBookShelf = (id, shelf) => {
-  //   BooksAPI.update(id, shelf)
-  //   .then((newShelf) => {
-  //     this.setState({
-  //       results: newShelf
-  //     })
-  //   })
-  // }
-
   searchForTerms = (query,maxResults) => {
     BooksAPI.search(query,maxResults)
       .then((results) => {

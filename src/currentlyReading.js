@@ -3,14 +3,8 @@ import './App.css'
 
 
 class CurrentlyReading extends React.Component {
-  state = {
-    selectValue: ''
-  }
-
     render() {
       const { books, updateShelf, selectValue } = this.props
-
-      console.log(selectValue);
         return (
             <div className="bookshelf">
             <h2 className="bookshelf-title">Currently Reading</h2>
