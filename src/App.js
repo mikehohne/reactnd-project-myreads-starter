@@ -10,12 +10,6 @@ import WantToRead from './wantToRead'
 import Read from './read'
 import Search from './search'
 
-
-// import PropType from 'prop-types'
-// import escapeRegExp from 'escape-string-regexp'
-// import sortby from 'sortby'
-
-
 class BooksApp extends React.Component {
     /**
      * TODO: Instead of using this state variable to keep track of which page
@@ -26,12 +20,19 @@ class BooksApp extends React.Component {
 
   state = {
     books: [],
+    searchResults: []
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books)
       this.setState({ books })
+    })
+  }
+
+  searchBooks(query, maxResults) {
+    BooksAPI.search(query, maxResults).then((searchResults) => {
+      console.log(searchResults);
+      this.setState({ searchResults })
     })
   }
 
@@ -45,7 +46,7 @@ class BooksApp extends React.Component {
 
   render() {
 
-    const { books } = this.state
+    const { books, searchResults } = this.state
 
     let currentlyReadings = []
     let reads = []
@@ -67,7 +68,9 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
           <Route path="/search" exact render={() => (
-            <Search />
+            <Search searchedBooks={searchResults} onSearch={(query,maxResults) => {
+              this.searchBooks(query,maxResults)
+            }} />
           )} />
           <Route path="/" exact render={() => (
             <div className="list-books">
@@ -76,13 +79,13 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <CurrentlyReading books={currentlyReadings} />
+                <CurrentlyReading books={currentlyReadings}  />
                 <WantToRead books={wantToReads} />
                 <Read books={reads} />
               </div>
             </div>
             <div className="open-search">
-              <Link to="/search">Add a book</Link>
+              <Link to="/search"></Link>
             </div>
           </div>
           )} />

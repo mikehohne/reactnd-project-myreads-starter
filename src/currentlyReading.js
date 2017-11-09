@@ -1,8 +1,12 @@
 import React from 'react'
 import './App.css'
+import PropTypes from 'prop-types'
 
 
 class CurrentlyReading extends React.Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired
+  }
     render() {
       const { books } = this.props
         return (
