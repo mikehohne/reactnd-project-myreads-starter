@@ -1,10 +1,16 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
+import { Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 import * as BooksAPI from './BooksAPI'
 import CurrentlyReading from './currentlyReading'
 import WantToRead from './wantToRead'
 import Read from './read'
+import Search from './search'
+
+
 import PropType from 'prop-types'
 import escapeRegExp from 'escape-string-regexp'
 import sortby from 'sortby'
@@ -28,6 +34,7 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
+      console.log(books)
       this.setState({ books })
     })
   }
@@ -38,7 +45,14 @@ class BooksApp extends React.Component {
     })
   }
 
-  
+  // updateBookShelf = (id, shelf) => {
+  //   BooksAPI.update(id, shelf)
+  //   .then((newShelf) => {
+  //     this.setState({
+  //       results: newShelf
+  //     })
+  //   })
+  // }
 
   searchForTerms = (query,maxResults) => {
     BooksAPI.search(query,maxResults)
@@ -54,7 +68,7 @@ class BooksApp extends React.Component {
 
   render() {
 
-    const { books, results, query, maxResults } = this.state
+    const { books, results, query, maxResults, showSearchPage } = this.state
 
     let currentlyReadings = []
     let reads = []
@@ -75,28 +89,11 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author" value={query} onChange={this.handleChange}/>
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-        ) : (
-          <div className="list-books">
+          <Route path="/search" exact render={() => (
+            <Search />
+          )} />
+          <Route path="/" exact render={() => (
+            <div className="list-books">
             <div className="list-books-title">
               <h1>Bookshelf App</h1>
             </div>
@@ -108,10 +105,10 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+              <Link to="/search">Add a book</Link>
             </div>
           </div>
-        )}
+          )} />
       </div>
     )
   }
