@@ -4,7 +4,7 @@ import './App.css'
 
 class CurrentlyReading extends React.Component {
     render() {
-      const { books, updateShelf, selectValue } = this.props
+      const { books } = this.props
         return (
             <div className="bookshelf">
             <h2 className="bookshelf-title">Currently Reading</h2>
@@ -18,7 +18,7 @@ class CurrentlyReading extends React.Component {
                       <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                       <div className="book-shelf-changer">
                         {/* dropdown */}
-                        <select value={selectValue}>
+                        <select>
                           <option value="none" disabled>Move to...</option>
                           {/* shelves */}
                           <option value={book.shelf}>{book.shelf.toUpperCase()}</option>

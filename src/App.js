@@ -11,9 +11,9 @@ import Read from './read'
 import Search from './search'
 
 
-import PropType from 'prop-types'
-import escapeRegExp from 'escape-string-regexp'
-import sortby from 'sortby'
+// import PropType from 'prop-types'
+// import escapeRegExp from 'escape-string-regexp'
+// import sortby from 'sortby'
 
 
 class BooksApp extends React.Component {
@@ -26,10 +26,6 @@ class BooksApp extends React.Component {
 
   state = {
     books: [],
-    query: '',
-    maxResults: 10,
-    results: [],
-    showSearchPage: false
   }
 
   componentDidMount() {
@@ -45,21 +41,11 @@ class BooksApp extends React.Component {
     })
   }
 
-  searchForTerms = (query,maxResults) => {
-    BooksAPI.search(query,maxResults)
-      .then((results) => {
-        if(results.error) {
-          console.error('Invalid Search Term');
-        }
-        this.setState({
-          results: results,
-      })
-    })
-  }
+
 
   render() {
 
-    const { books, results, query, maxResults, showSearchPage } = this.state
+    const { books } = this.state
 
     let currentlyReadings = []
     let reads = []
@@ -72,9 +58,9 @@ class BooksApp extends React.Component {
         wantToReads.push(book);
       } else if(book.shelf === 'currentlyReading') {
         currentlyReadings.push(book);
-      } else {
+      } 
       return `<div>No Shelves</div>`
-      }
+      
     }))
 
 
